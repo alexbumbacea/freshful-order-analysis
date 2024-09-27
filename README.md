@@ -6,11 +6,11 @@ Now browse to "Comenzile mele". Search for requests matching for any "shop/order
 
 The JWT is valid for 30 minutes usually. Now you can run 
 
-    go run ./cmd/download_order
+    make download
 
 Now you will have a ./data folder containing a json for each order you made in freshful.
 In order to do any bare analysis I opted to denormalize all order in csv format (1 line per order line). To do that run:
 
-    go run ./cmd/denormalize_orders
+    make denormalize
 
 Now you will have `denormalized.csv` available. I usually start doing pivot tables over that data.[README.md](README.md)

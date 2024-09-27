@@ -7,6 +7,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	_ "github.com/joho/godotenv/autoload"
 )
 
 type Order struct {
@@ -49,10 +51,10 @@ type OrderListResponse struct {
 }
 
 func main() {
-	token := "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3Mjc0NTUzOTEsImV4cCI6MTcyNzQ1NzE5MSwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiZW1hZ0BidW1iYWNlYS5ybyJ9.Hght9rKsWqU306ZYm6nFHVeyk1aS6PHGBg0lsRXpdWxZ_CFHZVyoxMxrYtPYbZhkmLompQo0kmsGDtRGXu414mFt8VdTzCyKuv5QnKlELEavvmIoyYWg22O8giL5Jctl3EtXVmzy_0mMhB4giuBKTP1K1fqoutqYkDGEm0Yi9lcwOSkibDaFPOIRWsNee3SGb0Qn1J23VyXP4ewCkUhJGSTlWB-0E0aCi-SBP4rB1o62-gE0WaUrzphDRm4VU-sZVlzL7vm93RXvyqUfbZJrmGSChrwVFH_TvfUapvePEYMXuknHZEN6-7M5mlQHZVb2-oMlvmBHZwciOuNrtAmddbFMv4i4JSRJt8OZOMAzdLtR1ZaaRSJpH_Pd1yHm8Fwy7Z-zj_-pwXFGmm6QOx0MA-kf-XwYPMUWd8VuHVAKSAcGidfTcXotgf-343QqWG8R9BpMw4HUFbnEkGWRn-Ik76kj4QOXH9kC1zzirE5c0EeID3GZhJt2mz8tsZIQRsjJvZujlsotGxtFZbkmqMouHlhwpb8aXXshhBPoAvK6dbPZBSLBOYCIt_c8h0yFd3r-3uCk_oCaET0B9GiRtpuw5_7FAZOY0upC221biystXnoJu9m7kWyYTJFJqWy99NtRRqneW62MHEQi7L2LDAGX8Nqxs5DBd3aOo8ZoSIDTuTQ"
+	token := os.Getenv("TOKEN")
 	i := 1
 	for {
-		url := fmt.Sprintf("https://www.freshful.ro/api/v2/shop/orders?page=%d&itemsPerPage=30", i)
+		url := fmt.Sprintf("%s/orders?page=%d&itemsPerPage=30", os.Getenv("URL"), i)
 		req, err := http.NewRequest("GET", url, nil)
 		if err != nil {
 			panic(err)
@@ -81,10 +83,11 @@ func main() {
 			// Check if file already exists
 			if _, err := os.Stat(filePath); err == nil {
 				log.Printf("File %s already exists. Skipping download.", filePath)
+				continue
 				return
 			}
 
-			req, err := http.NewRequest("GET", fmt.Sprintf("https://www.freshful.ro/api/v2/shop/myaccount_orders/%s", item.TokenValue), nil)
+			req, err := http.NewRequest("GET", fmt.Sprintf("%s/myaccount_orders/%s", os.Getenv("URL"), item.TokenValue), nil)
 			if err != nil {
 				panic(err)
 			}
